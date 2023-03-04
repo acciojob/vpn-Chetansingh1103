@@ -63,7 +63,7 @@ public class ConnectionController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (NullPointerException e){
-            throw new NullPointerException();
+            throw new NullPointerException(e.getMessage());
         }
         catch (Exception e){
             throw new Exception(e.getMessage());

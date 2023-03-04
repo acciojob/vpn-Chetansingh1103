@@ -84,12 +84,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         User receiver = userRepository2.findById(receiverId).orElse(null);
 
         if(sender == null || receiver == null){
-            throw new NullPointerException();
+            throw new NullPointerException(null);
         }
 
         if(receiver.getConnected()){
             if (receiver.getMaskedIp() == null) {
-                throw new NullPointerException();
+                throw new NullPointerException(null);
             }
 
             String maskedIp = receiver.getMaskedIp();
