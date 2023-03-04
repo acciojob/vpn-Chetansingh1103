@@ -75,6 +75,6 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        throw new Exception();
+        throw new Exception("Country not found");
     }
 }

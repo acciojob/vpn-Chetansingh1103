@@ -82,7 +82,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User communicate(int senderId, int receiverId) throws Exception {
 
         if(!userRepository2.findById(senderId).isPresent() || !userRepository2.findById(receiverId).isPresent()){
-            throw new NullPointerException();
+            throw new Exception("Cannot establish communication");
         }
 
         User sender = userRepository2.findById(senderId).get();
@@ -98,7 +98,12 @@ public class ConnectionServiceImpl implements ConnectionService {
 
                 String countryName = receiver.getOriginalCountry().getCountryName().name();
 
-                sender = connect(senderId,countryName);
+                try {
+                    sender = connect(senderId,countryName);
+                }
+                catch (Exception e){
+                    throw new Exception("Cannot establish communication");
+                }
 
             }
 
@@ -106,8 +111,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         else {
 
             if(!sender.getOriginalCountry().equals(receiver.getOriginalCountry())){
-
-                sender = connect(senderId,receiver.getOriginalCountry().getCountryName().name());
+                try {
+                    sender = connect(senderId,receiver.getOriginalCountry().getCountryName().name());
+                }
+                catch (Exception e){
+                    throw new Exception("Cannot establish communication");
+                }
 
             }
 

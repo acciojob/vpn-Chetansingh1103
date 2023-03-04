@@ -25,7 +25,7 @@ public class UserController {
             throw new NullPointerException();
         }
         catch (Exception e){
-            throw new Exception();
+            throw new Exception(e.getMessage());
         }
     }
 

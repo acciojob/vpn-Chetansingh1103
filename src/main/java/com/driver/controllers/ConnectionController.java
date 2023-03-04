@@ -66,7 +66,7 @@ public class ConnectionController {
             throw new NullPointerException();
         }
         catch (Exception e){
-            throw new Exception("Cannot establish communication");
+            throw new Exception(e.getMessage());
         }
     }
 }
