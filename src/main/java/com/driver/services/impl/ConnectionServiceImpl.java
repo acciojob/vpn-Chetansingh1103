@@ -88,7 +88,6 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         if(receiver.getConnected()){
-
             if (receiver.getMaskedIp() == null) {
                 throw new Exception("Receiver IP is null");
             }
@@ -100,6 +99,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 String countryName = receiver.getOriginalCountry().getCountryName().name();
                 try {
                     sender = connect(senderId,countryName);
+                    userRepository2.save(sender); // save changes
                 } catch (Exception e) {
                     throw new CannotEstablishCommunicationException();
                 }
@@ -109,6 +109,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             if(!sender.getOriginalCountry().equals(receiver.getOriginalCountry())){
                 try {
                     sender = connect(senderId,receiver.getOriginalCountry().getCountryName().name());
+                    userRepository2.save(sender); // save changes
                 } catch (Exception e) {
                     throw new CannotEstablishCommunicationException();
                 }
@@ -116,6 +117,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
         return sender;
     }
+
     public static class CannotEstablishCommunicationException extends Exception {
         public CannotEstablishCommunicationException() {
             super("Cannot establish communication");
