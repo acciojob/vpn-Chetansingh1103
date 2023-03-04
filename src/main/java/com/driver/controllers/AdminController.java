@@ -1,5 +1,7 @@
 package com.driver.controllers;
 
+import com.driver.model.Admin;
+import com.driver.model.ServiceProvider;
 import com.driver.services.impl.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,12 @@ public class AdminController {
         //add a country under the serviceProvider and return respective service provider
         //country name would be a 3-character string out of ind, aus, usa, chi, jpn. Each character can be in uppercase or lowercase. You should create a new Country object based on the given country name and add it to the country list of the service provider. Note that the user attribute of the country in this case would be null.
         //In case country name is not amongst the above mentioned strings, throw "Country not found" exception
-        ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e){
+            throw new Exception("Country not found");
+        }
     }
 }

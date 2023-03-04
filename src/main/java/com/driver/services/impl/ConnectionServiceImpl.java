@@ -22,13 +22,101 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User connect(int userId, String countryName) throws Exception{
 
+        User user = userRepository2.findById(userId).get();
+
+        if(user.isConnected()){
+            throw new Exception("Already connected");
+        }
+
+        if(user.getCountry().getCountryName().name().equalsIgnoreCase(countryName)){
+            return user;
+        }
+
+
+        for(ServiceProvider serviceProvider : user.getServiceProviderList()){
+
+            for(Country country : serviceProvider.getCountryList()){
+                if(country.getCountryName().name().equalsIgnoreCase(countryName)){
+
+                    user.setMaskedIp(country.getCountryName().toCode() + "" + serviceProvider.getId() + "" + userId);
+                    user.setConnected(true);
+
+                    Connection connection = new Connection();
+                    connection.setUser(user);
+                    connection.setServiceProvider(serviceProvider);
+
+                    user.getConnectionList().add(connection);
+                    serviceProvider.getConnectionList().add(connection);
+
+                    userRepository2.save(user);
+
+                    return user;
+
+                }
+            }
+
+        }
+
+        throw new Exception("Unable to connect");
     }
     @Override
     public User disconnect(int userId) throws Exception {
 
+        User user = userRepository2.findById(userId).get();
+
+        if(!user.isConnected()){
+            throw new Exception("Already disconnected");
+        }
+
+        user.setConnected(false);
+        user.setMaskedIp(null);
+
+        List<Connection> connectionList = user.getConnectionList();
+
+        Connection connection = connectionList.get(connectionList.size() - 1);
+        connectionRepository2.delete(connection);
+
+
+        userRepository2.save(user);
+
+        return user;
+
     }
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
+
+        if(!userRepository2.findById(senderId).isPresent() || !userRepository2.findById(receiverId).isPresent()){
+            throw new Exception();
+        }
+
+        User sender = userRepository2.findById(senderId).get();
+        User receiver = userRepository2.findById(receiverId).get();
+
+        if(receiver.isConnected()){
+
+            String maskedIp = receiver.getMaskedIp();
+            String countryCode = maskedIp.substring(0,3);
+
+
+            if(!sender.getCountry().getCountryName().toCode().equals(countryCode)){
+
+                String countryName = receiver.getCountry().getCountryName().name();
+
+                sender = connect(senderId,countryName);
+
+            }
+
+        }
+        else {
+
+            if(!sender.getCountry().equals(receiver.getCountry())){
+
+                sender = connect(senderId,receiver.getCountry().getCountryName().name());
+
+            }
+
+        }
+        return sender;
 
     }
 }
