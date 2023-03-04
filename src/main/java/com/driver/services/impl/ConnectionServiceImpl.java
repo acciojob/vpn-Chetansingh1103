@@ -113,9 +113,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                 }
             }
         }
-
-        userRepository2.save(sender);
-
         return sender;
     }
 
