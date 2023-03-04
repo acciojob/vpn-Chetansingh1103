@@ -50,9 +50,10 @@ public class UserServiceImpl implements UserService {
 
                 userRepository3.save(user);
 
+                return user;
             }
         }
-        throw  new Exception();
+        throw new Exception();
     }
 
     @Override

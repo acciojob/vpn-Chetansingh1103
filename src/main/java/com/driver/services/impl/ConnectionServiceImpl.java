@@ -82,7 +82,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User communicate(int senderId, int receiverId) throws Exception {
 
         if(!userRepository2.findById(senderId).isPresent() || !userRepository2.findById(receiverId).isPresent()){
-            throw new Exception("Cannot establish communication");
+            throw new NullPointerException();
         }
 
         User sender = userRepository2.findById(senderId).get();

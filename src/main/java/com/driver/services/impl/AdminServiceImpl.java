@@ -1,5 +1,4 @@
 package com.driver.services.impl;
-
 import com.driver.model.Admin;
 import com.driver.model.Country;
 import com.driver.model.CountryName;
@@ -49,16 +48,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ServiceProvider addCountry(int serviceProviderId, String countryName) throws Exception{
-
-
-
+    public ServiceProvider addCountry(int serviceProviderId, String countryName) throws CountryNotFoundException {
         for(CountryName countryName1 : CountryName.values()){
             if(countryName1.name().equalsIgnoreCase(countryName)){
 
-
                 ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).get();
-
 
                 Country country = new Country();
                 country.setCountryName(countryName1);
@@ -69,12 +63,22 @@ public class AdminServiceImpl implements AdminService {
                 serviceProvider.getCountryList().add(country);
 
                 serviceProviderRepository1.save(serviceProvider);
-               // countryRepository1.save(country);
+                // countryRepository1.save(country);
 
                 return serviceProvider;
             }
         }
 
-        throw new Exception("Country not found");
+        throw new CountryNotFoundException();
+    }
+
+    private static class CountryNotFoundException extends Exception {
+        public CountryNotFoundException(String errorMessage) {
+            super(errorMessage);
+        }
+
+        public CountryNotFoundException() {
+
+        }
     }
 }
