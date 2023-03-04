@@ -54,6 +54,10 @@ public class AdminServiceImpl implements AdminService {
         for(CountryName countryName1 : CountryName.values()){
             if(countryName1.name().equalsIgnoreCase(countryName)){
 
+                if(!serviceProviderRepository1.findById(serviceProviderId).isPresent()){
+                    throw new NullPointerException();
+                }
+
                 ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).get();
 
                 Country country = new Country();

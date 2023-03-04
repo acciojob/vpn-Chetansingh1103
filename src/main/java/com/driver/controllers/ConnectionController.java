@@ -56,6 +56,9 @@ public class ConnectionController {
             User updatedSender = connectionService.communicate(senderId, receiverId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
+        catch (NullPointerException e){
+            throw new NullPointerException();
+        }
         catch (Exception e){
             throw new Exception("Cannot establish communication");
         }
