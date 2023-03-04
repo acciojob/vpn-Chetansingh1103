@@ -63,14 +63,14 @@ public class AdminServiceImpl implements AdminService {
                 serviceProvider.getCountryList().add(country);
 
                 serviceProviderRepository1.save(serviceProvider);
-                // countryRepository1.save(country);
 
                 return serviceProvider;
             }
         }
 
-        throw new CountryNotFoundException();
+        return null; // return null if country is not found
     }
+
 
     private static class CountryNotFoundException extends Exception {
         public CountryNotFoundException(String errorMessage) {

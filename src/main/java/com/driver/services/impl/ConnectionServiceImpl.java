@@ -90,6 +90,10 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         if(receiver.getConnected()){
 
+            if (receiver.getMaskedIp() == null) {
+                throw new Exception("Receiver IP is null");
+            }
+
             String maskedIp = receiver.getMaskedIp();
             String countryCode = maskedIp.substring(0,3);
 
