@@ -39,7 +39,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 if(country.getCountryName().name().equalsIgnoreCase(countryName)){
 
                     user.setMaskedIp(country.getCountryName().toCode() + "" + serviceProvider.getId() + "" + userId);
-                    user.setConnected(true);
+                    user.setConnected(Boolean.TRUE);
 
                     Connection connection = new Connection();
                     connection.setUser(user);
@@ -68,7 +68,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new Exception("Already disconnected");
         }
 
-        user.setConnected(false);
+        user.setConnected(Boolean.FALSE);
         user.setMaskedIp(null);
 
         List<Connection> connectionList = user.getConnectionList();
