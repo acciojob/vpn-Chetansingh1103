@@ -48,6 +48,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     user.getConnectionList().add(connection);
                     serviceProvider.getConnectionList().add(connection);
 
+                    userRepository2.save(user);
                     serviceProviderRepository2.save(serviceProvider);
 
                     return user;
@@ -82,38 +83,41 @@ public class ConnectionServiceImpl implements ConnectionService {
         User sender = userRepository2.findById(senderId).orElse(null);
         User receiver = userRepository2.findById(receiverId).orElse(null);
 
-        if (sender == null || receiver == null) {
+        if(sender == null || receiver == null){
             throw new NullPointerException();
         }
 
-        if (receiver.getConnected()) {
+        if(receiver.getConnected()){
             if (receiver.getMaskedIp() == null) {
                 throw new Exception("Receiver IP is null");
             }
 
             String maskedIp = receiver.getMaskedIp();
-            String countryCode = maskedIp.substring(0, 3);
+            String countryCode = maskedIp.substring(0,3);
 
-            if (!sender.getOriginalCountry().getCode().equals(countryCode)) {
-                String countryName = CountryName.valueOf(countryCode).name();
+            if(!sender.getOriginalCountry().getCountryName().toCode().equals(countryCode)){
+                String countryName = receiver.getOriginalCountry().getCountryName().name();
                 try {
-                    sender = connect(senderId, countryName);
-                } catch (Exception e) {
-                    throw new CannotEstablishCommunicationException();
-                }
-            }
-        } else {
-            if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry())) {
-                try {
-                    sender = connect(senderId, receiver.getOriginalCountry().getCountryName().name());
+                    sender = connect(senderId,countryName);
                 } catch (Exception e) {
                     throw new CannotEstablishCommunicationException();
                 }
             }
         }
+        else {
+            if(!sender.getOriginalCountry().equals(receiver.getOriginalCountry())){
+                try {
+                    sender = connect(senderId,receiver.getOriginalCountry().getCountryName().name());
+                } catch (Exception e) {
+                    throw new CannotEstablishCommunicationException();
+                }
+            }
+        }
+
+        userRepository2.save(sender);
+
         return sender;
     }
-
 
     public static class CannotEstablishCommunicationException extends Exception {
         public CannotEstablishCommunicationException() {
