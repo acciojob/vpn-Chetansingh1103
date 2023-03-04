@@ -41,7 +41,7 @@ public class AdminController {
             throw new NullPointerException();
         }
         catch (Exception e){
-            throw new Exception("Country not found");
+            throw new Exception();
         }
     }
 }
