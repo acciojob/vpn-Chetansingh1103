@@ -24,11 +24,11 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         User user = userRepository2.findById(userId).get();
 
-        if(user.isConnected()){
+        if(user.getConnected()){
             throw new Exception("Already connected");
         }
 
-        if(user.getCountry().getCountryName().name().equalsIgnoreCase(countryName)){
+        if(user.getOriginalCountry().getCountryName().name().equalsIgnoreCase(countryName)){
             return user;
         }
 
@@ -64,7 +64,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         User user = userRepository2.findById(userId).get();
 
-        if(!user.isConnected()){
+        if(!user.getConnected()){
             throw new Exception("Already disconnected");
         }
 
@@ -92,15 +92,15 @@ public class ConnectionServiceImpl implements ConnectionService {
         User sender = userRepository2.findById(senderId).get();
         User receiver = userRepository2.findById(receiverId).get();
 
-        if(receiver.isConnected()){
+        if(receiver.getConnected()){
 
             String maskedIp = receiver.getMaskedIp();
             String countryCode = maskedIp.substring(0,3);
 
 
-            if(!sender.getCountry().getCountryName().toCode().equals(countryCode)){
+            if(!sender.getOriginalCountry().getCountryName().toCode().equals(countryCode)){
 
-                String countryName = receiver.getCountry().getCountryName().name();
+                String countryName = receiver.getOriginalCountry().getCountryName().name();
 
                 sender = connect(senderId,countryName);
 
@@ -109,9 +109,9 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
         else {
 
-            if(!sender.getCountry().equals(receiver.getCountry())){
+            if(!sender.getOriginalCountry().equals(receiver.getOriginalCountry())){
 
-                sender = connect(senderId,receiver.getCountry().getCountryName().name());
+                sender = connect(senderId,receiver.getOriginalCountry().getCountryName().name());
 
             }
 
