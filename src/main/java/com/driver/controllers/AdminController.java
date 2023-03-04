@@ -38,9 +38,10 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (AdminServiceImpl.CountryNotFoundException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (AdminServiceImpl.ServiceProviderNotFoundException e) {
-            return ResponseEntity.notFound().build();
+           throw new AdminServiceImpl.CountryNotFoundException(e.getMessage());
+        }
+        catch (Exception e){
+            throw new Exception(e.getMessage());
         }
     }
 }

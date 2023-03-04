@@ -51,7 +51,11 @@ public class AdminServiceImpl implements AdminService {
     public ServiceProvider addCountry(int serviceProviderId, String countryName) throws CountryNotFoundException {
         for(CountryName countryName1 : CountryName.values()) {
             if(countryName1.name().equalsIgnoreCase(countryName)) {
-                ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).orElseThrow(() -> new ServiceProviderNotFoundException(serviceProviderId));
+                ServiceProvider serviceProvider = serviceProviderRepository1.findById(serviceProviderId).orElse(null);
+
+                if(serviceProvider == null){
+                    throw new NullPointerException();
+                }
 
                 Country country = new Country();
                 country.setCountryName(countryName1);
@@ -67,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        throw new CountryNotFoundException(null); // throw exception if country is not found
+        throw new CountryNotFoundException("Country not found"); // throw exception if country is not found
     }
 
 
@@ -81,9 +85,5 @@ public class AdminServiceImpl implements AdminService {
 
         }
     }
-    public static class ServiceProviderNotFoundException extends RuntimeException {
-        public ServiceProviderNotFoundException(int serviceProviderId) {
-            super("Service provider not found with id: " + serviceProviderId);
-        }
-    }
+
 }
