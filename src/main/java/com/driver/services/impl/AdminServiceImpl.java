@@ -67,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        throw new CountryNotFoundException("Country not found"); // throw exception if country is not found
+        throw new CountryNotFoundException(null); // throw exception if country is not found
     }
 
 
