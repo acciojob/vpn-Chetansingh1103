@@ -37,11 +37,10 @@ public class AdminController {
             ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch (NullPointerException e){
-            throw new NullPointerException();
-        }
-        catch (Exception e){
-            throw new Exception(e.getMessage());
+        catch (AdminServiceImpl.CountryNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (AdminServiceImpl.ServiceProviderNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -67,11 +67,12 @@ public class AdminServiceImpl implements AdminService {
             }
         }
 
-        throw new CountryNotFoundException(countryName); // throw exception if country is not found
+        throw new CountryNotFoundException("Country not found"); // throw exception if country is not found
     }
 
 
-    private static class CountryNotFoundException extends Exception {
+
+    public static class CountryNotFoundException extends Exception {
         public CountryNotFoundException(String errorMessage) {
             super(errorMessage);
         }
