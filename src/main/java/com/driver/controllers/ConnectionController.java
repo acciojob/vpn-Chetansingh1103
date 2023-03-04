@@ -25,6 +25,9 @@ public class ConnectionController {
             User user = connectionService.connect(userId, countryName);
             return new ResponseEntity<>(HttpStatus.OK);
         }
+        catch (NullPointerException e){
+            throw new NullPointerException();
+        }
         catch (Exception e){
             throw new Exception(e.getMessage());
         }
@@ -37,6 +40,9 @@ public class ConnectionController {
         try {
             User user = connectionService.disconnect(userId);
             return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (NullPointerException e){
+            throw new NullPointerException();
         }
         catch (Exception e){
             throw new Exception(e.getMessage());

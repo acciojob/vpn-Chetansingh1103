@@ -2,6 +2,7 @@ package com.driver.controllers;
 import com.driver.model.User;
 import com.driver.services.UserService;
 import com.driver.services.impl.UserServiceImpl;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,9 @@ public class UserController {
         try {
             User user = userService.register(username, password, countryName);
             return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (NullPointerException e){
+            throw new NullPointerException();
         }
         catch (Exception e){
             throw new Exception();
