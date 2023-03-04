@@ -48,7 +48,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                     user.getConnectionList().add(connection);
                     serviceProvider.getConnectionList().add(connection);
 
-                    userRepository2.save(user);
                     serviceProviderRepository2.save(serviceProvider);
 
                     return user;
@@ -99,7 +98,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                 String countryName = CountryName.valueOf(countryCode).name();
                 try {
                     sender = connect(senderId, countryName);
-                    userRepository2.save(sender); // save changes
                 } catch (Exception e) {
                     throw new CannotEstablishCommunicationException();
                 }
@@ -108,7 +106,6 @@ public class ConnectionServiceImpl implements ConnectionService {
             if (!sender.getOriginalCountry().equals(receiver.getOriginalCountry())) {
                 try {
                     sender = connect(senderId, receiver.getOriginalCountry().getCountryName().name());
-                    userRepository2.save(sender); // save changes
                 } catch (Exception e) {
                     throw new CannotEstablishCommunicationException();
                 }
