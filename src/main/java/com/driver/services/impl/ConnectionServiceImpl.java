@@ -81,12 +81,12 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
 
-        if(!userRepository2.findById(senderId).isPresent() || !userRepository2.findById(receiverId).isPresent()){
+        User sender = userRepository2.findById(senderId).orElse(null);
+        User receiver = userRepository2.findById(receiverId).orElse(null);
+
+        if(sender == null || receiver == null){
             throw new NullPointerException();
         }
-
-        User sender = userRepository2.findById(senderId).get();
-        User receiver = userRepository2.findById(receiverId).get();
 
         if(receiver.getConnected()){
 
